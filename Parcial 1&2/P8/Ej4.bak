@@ -1,0 +1,57 @@
+#lang racket
+(require rackunit)
+(require "lpp.rkt")
+
+
+;Ejercicio 4a
+
+(define (sustituye-elem elem-old elem-new lista)
+  (cond
+    ((null? lista) '())
+    ((hoja? lista) (if (equal? elem-old lista)  elem-new lista))
+    (else (cons (sustituye-elem elem-old elem-new (first lista))
+                (sustituye-elem elem-old elem-new (rest lista))))))
+
+
+(check-equal? (sustituye-elem 'c 'h '(a b (c d (e c)) c (f (c) g))) '(a b (h d (e h)) h (f (h) g)))
+
+
+
+;Ejercicio 4b
+
+(define (combine list1 list2)
+  (if (null? list1) list2 (cons list1 list2)))
+
+
+(define (intersecta lista-1 lista-2)
+  (cond
+    ((or (null? lista-1) (null? lista-2)) '())
+    ((and (hoja? lista-1) (hoja? lista-2)) (cons lista-1 lista-2))
+    ((and (list? lista-1) (list? lista-2)) (combine (intersecta (first lista-1) (first lista-2))
+                (intersecta (rest lista-1) (rest lista-2))))
+    (else '())))
+
+(check-equal? (intersecta 'a '(b c)) '())
+(check-equal? (intersecta 'a 'b) '(a . b))
+(check-equal? (intersecta '(a b) '(c d)) '((a . c) (b . d)))
+(check-equal? (intersecta '(a (b)) '(c d)) '((a . c)))
+(check-equal? (intersecta '(a (b)) '(c (d) e)) '((a . c) ((b . d))))
+(check-equal? (intersecta '(a (b) (c)) '(d e (f))) '((a . d) ((c . f))))
+(check-equal? (intersecta '(a (b c) (d)) '((e) (f) (g))) '(((b . f)) ((d . g))))
+
+
+;Ejercicio 4b2
+
+(define (intersecta-gen f lista-1 lista-2)
+  (cond
+    ((or (null? lista-1) (null? lista-2)) '())
+    ((and (hoja? lista-1) (hoja? lista-2)) (f lista-1 lista-2))
+    ((and (list? lista-1) (list? lista-2)) (combine (intersecta-gen f (first lista-1) (first lista-2))
+                (intersecta-gen f (rest lista-1) (rest lista-2))))
+    (else '())))
+
+;Ejemplos
+(intersecta-gen cons '(a b) '(c d))
+(intersecta-gen * '(2 12) '(9 12))
+(intersecta-gen string-append '("hola" "adios") '("querida" "lpp"))
+

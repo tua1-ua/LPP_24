@@ -1,0 +1,31 @@
+#lang racket
+(require rackunit)
+(require "lpp.rkt")
+
+
+;Funciones auxiliares
+
+(define (encuentra-indice char)
+  (cond
+    ((equal? (char->integer char) 97) 0)
+    (else (- (char->integer char) 97))))
+
+
+(define (encuentra-caracter indice)
+  (integer->char (+ indice 97)))
+
+
+(define (entre-az? char)
+  (and (>= (encuentra-indice char) 0)
+       (<= (encuentra-indice char) 25 )))
+
+(define (rota-indice indice desplazamiento)
+  (cond
+    ((positive? desplazamiento) (if (entre-az? (encuentra-caracter
+                                                (+ indice desplazamiento)))
+                                    (+ indice desplazamiento)
+                                    (modulo (+ indice desplazamiento) 25)))
+    (else 1)))
+                                        
+  
+           

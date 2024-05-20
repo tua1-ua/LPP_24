@@ -1,0 +1,77 @@
+#lang racket
+(require rackunit)
+(require "lpp.rkt")
+
+;Ejercicio 1a
+(define (minimo lista)
+  (cond
+    ((null? (rest lista)) (first lista))
+    (else (if (<= (first lista) (minimo (rest lista)))
+              (first lista)
+              (minimo (rest lista))))))
+
+
+(minimo '(2)) ; ⇒ 2
+(minimo '(1 8 6 4 3)) ; ⇒ 1
+(minimo '(1 -1 3 -6 4)) ; ⇒ -6
+
+
+;A.2
+#|
+(minimo '(1 8 6 4 3)) ; ⇒ 1
+
+-¿Qué lista se pasa como parámetro a la primera llamada recursiva a la función?
+(mínimo (rest lista)) ----> (minimo '(8 6 4 3))
+
+
+- Esa llamada recursiva devuelve el nº 3.
+
+- Los argumentos son----> (< (first lista) (minimo (rest lista)))
+                          = (< 1 3) ---> 1
+
+|#
+
+
+;Ejercicio 1C
+
+
+
+
+
+
+
+
+
+
+
+
+;1D
+(define (contiene? lista elemento)
+  (cond
+    ((null? lista) #f)
+    ((equal? elemento (first lista)) #t)
+    (else (contiene? (rest lista) elemento))))
+
+(contiene? '(algo 3 #\A) 3) ; ⇒ #t
+(contiene? '(algo 3 #\A) "algo") ; ⇒ #f
+(contiene? '(algo 3 #\A) 'algo) ; ⇒ #t
+
+
+(define (str-contiene? cadena char)
+  (cond
+    ((null? (string->list cadena)) #f)
+    ((equal? char (first (string->list cadena))) #t)
+    (else (str-contiene? (list->string (rest (string->list cadena))) char))))
+
+(str-contiene? "Hola" #\o) ; ⇒ #t
+(str-contiene? "Esto es una frase" #\space) ; ⇒ #t
+(str-contiene? "Hola" #\h) ; ⇒ #f
+
+
+
+
+    
+
+
+
+

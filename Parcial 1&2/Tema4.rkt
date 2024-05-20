@@ -1,0 +1,161 @@
+#lang racket
+(require rackunit)
+(require "lpp.rkt")
+
+
+;Numero de hojas
+(define (num-hojas lista)
+    (cond
+        ((null? lista) 0)
+        ((hoja? (first lista))
+            (+ 1 (num-hojas (rest lista))))
+        (else (+ (num-hojas (first lista))
+                 (num-hojas (rest lista))))))
+
+(define (pertenece? dato lista)
+  (cond 
+    ((null? lista) #f)
+    ((hoja? lista) (equal? dato lista))
+    (else (or (pertenece? dato (first lista))
+              (pertenece? dato (rest lista))))))
+
+
+(define (suma-datos-arbol arbol)
+    (+ (dato-arbol arbol)
+             (suma-datos-bosque (hijos-arbol arbol))))
+
+
+(define (suma-datos-bosque bosque)
+  (cond
+    ((null? bosque) 0)
+    (else (+ (suma-datos-arbol (first bosque))
+             (suma-datos-bosque (rest bosque))))))
+
+(define (suma-datos-arbol-fos arbol)
+  (+ (dato-arbol arbol)
+     (foldl + 0 (map suma-datos-arbol-fos (hijos-arbol arbol)))))
+
+
+
+(define arbol1 '(30 (15 (10) (12)) (18) (25 (19) (21) (22))))
+
+
+
+(define (to-list-arbol arbol)
+  (append (list (dato-arbol arbol))
+          (to-list-bosque (hijos-arbol arbol))))
+
+
+(define (to-list-bosque bosque)
+  (cond
+    ((null? bosque) '())
+    (else (cons (to-list-arbol (first bosque))
+                (to-list-bosque (rest bosque))))))
+
+
+(define (to-list-arbol-fos arbol)
+  (cons (list (dato-arbol arbol))
+         (foldr append '() (map to-list-arbol-fos (hijos-arbol arbol)))))
+
+(define (cuadrado x) (* x x))
+
+(define (cuadrado-arbol arbol)
+  (construye-arbol (cuadrado (dato-arbol arbol))
+                   (cuadrado-bosque (hijos-arbol arbol))))
+
+(define (cuadrado-bosque bosque)
+  (cond
+    ((null? bosque) '())
+    (else (cons (cuadrado-arbol (first bosque))
+                (cuadrado-bosque (rest bosque))))))
+
+(define (cuadrado-arbol-fos arbol)
+   (construye-arbol (cuadrado (dato-arbol arbol))
+                    (map cuadrado-arbol-fos (hijos-arbol arbol))))
+
+
+(define (map-arbol f arbol)
+  (construye-arbol (f (dato-arbol arbol))
+                   (map-bosque f (hijos-arbol arbol))))
+
+(define (map-bosque f bosque)
+  (cond
+    ((null? bosque) '())
+    (else (cons (map-arbol f (first bosque))
+                (map-bosque f (rest bosque))))))
+
+
+(define (map-arbol-fos f arbol)
+  (construye-arbol (f (dato-arbol arbol))
+                   (map (lambda (x) (map-arbol-fos f x)) (hijos-arbol arbol))))
+
+
+(define (altura-arbol arbol)
+  (cond
+    ((hoja-arbol? arbol) 0)
+    (else (+ 1
+             (altura-bosque (hijos-arbol arbol))))))
+
+(define (altura-bosque bosque)
+  (cond
+    ((null? bosque) 0)
+    (else (max (altura-arbol (first bosque))
+             (altura-bosque (rest bosque))))))
+
+
+(define (altura-arbol-fos arbol)
+  (cond
+    ((hoja-arbol? arbol) 0)
+    (else (+ 1 (foldr max 0 (apply altura-arbol-fos (hijos-arbol arbol)))))))
+
+
+(define arbolb1
+   (construye-arbolb 10 (construye-arbolb 8 arbolb-vacio arbolb-vacio)
+                        (construye-arbolb 15 arbolb-vacio arbolb-vacio)))
+
+
+(define arbolb2
+   (construye-arbolb 40 
+                 (construye-arbolb 18
+                               (construye-arbolb 3 arbolb-vacio arbolb-vacio)
+                               (construye-arbolb 23 
+                                             arbolb-vacio
+                                             (construye-arbolb 29 
+                                                           arbolb-vacio
+                                                           arbolb-vacio)))
+                 (construye-arbolb 52
+                               (construye-arbolb 47 arbolb-vacio arbolb-vacio)
+                               arbolb-vacio)))
+
+
+
+
+(define (suma-datos-arbolb arbol)
+  (cond
+    ((vacio-arbolb? arbol) 0)
+    (else (+ (dato-arbolb arbol)
+             (suma-datos-arbolb (hijo-izq-arbolb arbol))
+             (suma-datos-arbolb (hijo-der-arbolb arbol))))))
+
+
+(define (to-list-arbolb arbol)
+  (cond
+    ((vacio-arbolb? arbol) '())
+    (else (append (list (dato-arbolb arbol))
+                  (to-list-arbolb (hijo-izq-arbolb arbol))
+                  (to-list-arbolb (hijo-der-arbolb arbol))))))
+
+
+(define (cuadrado-arbolb arbol)
+  (cond
+    ((vacio-arbolb? arbol) arbolb-vacio)
+    (else (construye-arbolb (cuadrado (dato-arbolb arbol))
+                (cuadrado-arbolb (hijo-izq-arbolb arbol))
+                (cuadrado-arbolb (hijo-der-arbolb arbol))))))
+
+
+
+
+
+
+

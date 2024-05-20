@@ -1,0 +1,1 @@
+("8.8" ta6nt ("7c52ef6caab8e5ed76d67e7b4fc5afdc3167dcb7" . "93fe167596a37fbf1727afb858889faebaf575cb") #"C:\\Users\\majin\\Documents\\LPP\\P3\\lpp.rkt" (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt") (collects #"rackunit" #"main.rkt"))

@@ -1,0 +1,1 @@
+("8.8" ta6nt ("3e8ddc2724b1365ea5d5b54ad4b71e3a0ee0a4d2" . "932f1e3721daa0e36bdb1b2e54628906900a3a5f") (collects #"2htdp" #"image.rkt") (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt") (collects #"rackunit" #"main.rkt"))

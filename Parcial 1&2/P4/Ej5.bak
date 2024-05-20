@@ -1,0 +1,18 @@
+#lang racket
+(require rackunit)
+(require "lpp.rkt")
+
+
+;Ejercicio 5a
+
+#|
+((lambda (x) (* x x)) 3) ; ⇒ Se eleva al cuadrado, osea devuelve 9
+((lambda () (+ 6 4))) ; ⇒ ? La expresión no recibe entrada, devuelve 10 siempre
+((lambda (x y) (* x (+ 2 y))) (+ 2 3) 4) ; ⇒ ?
+((lambda (x y) (* x (+ 2 x))) 5) ; ⇒ ?
+
+
+
+
+
+|#
